@@ -32,7 +32,7 @@
             z-index: -1;
         }
 
-        /* HEADER - SUBTITLE REMOVED FOR SIMPLICITY */
+        /* HEADER */
         header {
             height: 40vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
@@ -43,6 +43,85 @@
             font-family: 'JetBrains Mono', monospace; font-size: clamp(2.5rem, 6vw, 4rem);
             letter-spacing: -3px; color: #fff; margin-bottom: 5px;
             text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- NEW FEATURE: IMAGE SLIDER --- */
+        .slider-container {
+            width: 100%;
+            max-width: 800px;
+            height: 300px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid #1e293b;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .slider-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7) contrast(1.1);
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .slider-btn:hover { background: var(--accent); }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* --- NEW FEATURE: AUDIO PLAYER UI --- */
+        .audio-player {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--surface);
+            border: 1px solid #1e293b;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 5000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .audio-info { font-size: 0.7rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+        .play-btn {
+            background: var(--accent);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
         }
 
         /* NAV */
@@ -114,8 +193,29 @@
 </head>
 <body>
 
+    <div class="audio-player">
+        <button class="play-btn" id="musicBtn">▶</button>
+        <div class="audio-info">
+            <span>SYS_AUDIO: ACTIVE</span><br>
+            <small id="trackName">Lofi_Beats.mp3</small>
+        </div>
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
     <header>
         <h1>Architect Hub</h1>
+        
+        <div class="slider-container">
+            <div class="slider-wrapper" id="slider">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" class="slide" alt="Cyber 1">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" class="slide" alt="Cyber 2">
+                <img src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=800&q=80" class="slide" alt="Cyber 3">
+            </div>
+            <button class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+            <button class="slider-btn next-btn" onclick="moveSlide(1)">❯</button>
+        </div>
     </header>
 
     <nav>
@@ -190,66 +290,66 @@
     </footer>
 
     <script>
+        // 1. MUSIC ENGINE
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                music.play();
+                musicBtn.innerText = "⏸";
+                isPlaying = true;
+            } else {
+                music.pause();
+                musicBtn.innerText = "▶";
+                isPlaying = false;
+            }
+        });
+
+        // 2. SLIDER ENGINE
+        let currentSlide = 0;
+        function moveSlide(direction) {
+            const slider = document.getElementById('slider');
+            const totalSlides = document.querySelectorAll('.slide').length;
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Auto slide setiap 5 detik
+        setInterval(() => moveSlide(1), 5000);
+
+        // 3. ARTICLE ENGINE
         const articles = {
             'coding-js': {
                 title: 'Modern JavaScript: The ES6+ Paradigm',
                 content: `
                     <p>JavaScript telah berevolusi dari sekadar pemanis UI menjadi bahasa tingkat tinggi yang mampu menangani komputasi berat.</p>
                     <h4>Asynchronous Mastery</h4>
-                    <p>Penggunaan <code>Promise</code> dan <code>async/await</code> mengubah cara kita menangani data. Tanpa ini, aplikasi lu bakal freeze saat nunggu respon server.</p>
+                    <p>Penggunaan <code>Promise</code> dan <code>async/await</code> mengubah cara kita menangani data.</p>
                     <h4>Functional Programming</h4>
-                    <p>Fitur seperti <code>Map</code>, <code>Filter</code>, dan <code>Reduce</code> bikin kode lu lebih ringkas dan gampang di-debug. Jangan lagi pake for-loop jadul kalau gak terpaksa.</p>
-                    <p><i>Note: Selalu gunakan 'const' kecuali variabel itu beneran harus diubah nilainya.</i></p>
+                    <p>Fitur seperti <code>Map</code>, <code>Filter</code>, dan <code>Reduce</code> bikin kode lu lebih ringkas.</p>
                 `
             },
             'coding-backend': {
                 title: 'Scalable Backend Infrastructure',
-                content: `
-                    <p>Backend yang bagus bukan cuma jalan, tapi juga tahan banting saat diserbu ribuan user.</p>
-                    <h4>Node.js Event Loop</h4>
-                    <p>Node.js pake sistem single-threaded non-blocking I/O. Ini rahasia kenapa dia bisa nanganin ribuan koneksi sekaligus dengan resource kecil.</p>
-                    <h4>API Security</h4>
-                    <p>Gunakan <code>Helmet.js</code> buat ngamanin header HTTP lu, dan jangan lupa implementasi Rate Limiting biar server gak jebol kena serangan Brute Force.</p>
-                `
+                content: `<p>Backend yang tangguh bukan cuma jalan, tapi juga tahan banting.</p><h4>Node.js Event Loop</h4><p>Sistem single-threaded non-blocking I/O.</p>`
             },
             'hacking-termux': {
                 title: 'Termux: Mobile Penetration Suite',
-                content: `
-                    <p>HP Android lu itu sebenernya supercomputer kecil kalau lu tau cara pakenya.</p>
-                    <h4>Environment Setup</h4>
-                    <p>Gunakan <code>pkg upgrade</code> secara rutin. Keamanan terminal lu tergantung dari update package yang terbaru.</p>
-                    <h4>Automation Script</h4>
-                    <p>Belajar Bash scripting buat otomatisasi tugas-tugas repetitif. Sekali klik, semua tools nmap sampai metasploit jalan otomatis.</p>
-                `
+                content: `<p>HP Android lu itu sebenernya supercomputer kecil.</p><h4>Environment Setup</h4><p>Gunakan <code>pkg upgrade</code> secara rutin.</p>`
             },
             'hacking-network': {
                 title: 'Network Analysis & Sniffing',
-                content: `
-                    <p>Menganalisa paket data adalah cara terbaik buat nyari celah di aplikasi web atau network lokal.</p>
-                    <h4>Wireshark & Tcpdump</h4>
-                    <p>Belajar baca protokol TCP/IP. Kalau lu tau cara kerja 'Handshake', lu bakal tau cara masuk lewat celah protokolnya.</p>
-                    <h4>MITM Attacks</h4>
-                    <p>Hanya untuk edukasi: Pahami gimana ARP Spoofing bekerja biar lu bisa ngelindungi jaringan lu sendiri dari serangan serupa.</p>
-                `
+                content: `<p>Menganalisa paket data adalah cara terbaik buat nyari celah.</p><h4>Wireshark & Tcpdump</h4><p>Belajar baca protokol TCP/IP.</p>`
             },
             'record-cve': {
                 title: 'Archive: Common Vulnerabilities',
-                content: `
-                    <p>Seorang arsitek harus tau apa yang bisa bikin bangunannya roboh.</p>
-                    <h4>Log4Shell Analysis</h4>
-                    <p>Vulnerabilitas legendaris yang nunjukin kalau satu library kecil bisa ngebuka pintu buat seluruh server dunia. Pelajaran: Selalu audit dependency lu.</p>
-                    <h4>SQL Injection</h4>
-                    <p>Walaupun jadul, serangan ini masih sering kejadian karena programmer males pake <code>Prepared Statements</code>.</p>
-                `
+                content: `<p>Seorang arsitek harus tau apa yang bisa bikin bangunannya roboh.</p><h4>Log4Shell Analysis</h4><p>Vulnerabilitas legendaris.</p>`
             },
             'record-ethics': {
                 title: 'Ethics in Digital Frontier',
-                content: `
-                    <p>Skill besar harus dibarengi dengan tanggung jawab yang besar, Boss.</p>
-                    <h4>White Hat vs Black Hat</h4>
-                    <p>Bedanya cuma satu: Izin. Seorang pro sejati nyari celah buat diperbaiki, bukan buat ngerusak. Nama baik itu lebih mahal dari sekadar pamer data dump.</p>
-                    <p><strong>Rules:</strong> Jangan pernah nyoba exploit ke sistem yang lu gak punya izin tertulis di atas kertas.</p>
-                `
+                content: `<p>Skill besar harus dibarengi dengan tanggung jawab yang besar, Boss.</p><h4>White Hat vs Black Hat</h4><p>Bedanya cuma satu: Izin.</p>`
             }
         };
 
