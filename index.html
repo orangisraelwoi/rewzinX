@@ -3,57 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architect Education | RezinX</title>
+    <title>Architect Education | RezinX Premium</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="warning-bar">
+        <span>⚠ WARNING: ACCESSING CLASSIFIED EDUCATIONAL DATA. PROCEED WITH CAUTION.</span>
+    </div>
 
     <header>
-        <h1>ARCHITECT EDUCATION 01</h1>
-        <p>Welcome, Successor RezinX. Knowledge is Power, Control is Everything.</p>
+        <h1 class="glitch" data-text="EDUCATION 01">EDUCATION 01</h1>
+        <p id="typing-text">Welcome, Successor RezinX. Knowledge is Power, Control is Everything.</p>
     </header>
 
     <nav>
         <ul>
-            <li><a href="#coding">Coding Academy</a></li>
-            <li><a href="#hacking">Hacking Tools</a></li>
-            <li><a href="#database">Leaks/DB</a></li>
-            <li><a href="#credits">Credits</a></li>
+            <li><a href="#coding">CODING</a></li>
+            <li><a href="#hacking">HACKING</a></li>
+            <li><a href="#database">LEAKS/DB</a></li>
+            <li><a href="#credits">CREDITS</a></li>
         </ul>
     </nav>
 
     <main>
         <section id="coding">
-            <h2>[01] CODING ACADEMY</h2>
-            <article>
-                <h3>Frontend Mastery</h3>
-                <p>Belajar HTML5, CSS3 Grid/Flexbox, dan JavaScript ES6 buat bikin interface yang mematikan.</p>
-            </article>
-            <article>
-                <h3>Backend Destruction</h3>
-                <p>Node.js, Python, dan PHP. Kendalikan server dari balik layar tanpa jejak.</p>
-            </article>
+            <h2 class="section-title">[01] CODING ACADEMY</h2>
+            <div class="tool-grid">
+                <div class="tool-card premium">
+                    <h3>Frontend Mastery</h3>
+                    <p>Membangun interface mematikan dengan HTML/CSS/JS modern.</p>
+                    <button data-url="https://www.w3schools.com/html/">LEARN MORE</button>
+                </div>
+                <div class="tool-card premium">
+                    <h3>Backend Destruction</h3>
+                    <p>Kendali server mutlak menggunakan Node.js dan Python.</p>
+                    <button data-url="https://nodejs.org/en/learn">READ ARTICLE</button>
+                </div>
+            </div>
         </section>
 
-        <hr>
+        <hr class="cyber-line">
 
         <section id="hacking">
-            <h2>[02] HACKING TOOLS 01</h2>
+            <h2 class="section-title">[02] HACKING TOOLS 01</h2>
             <div class="tool-grid">
-                <div class="tool-card">
+                <div class="tool-card hacking-card">
+                    <div class="status-badge">ACTIVE</div>
                     <h3>Termux Exploiter</h3>
-                    <p>Auto-install script metasploit, nmap, dan sqlmap dalam satu perintah.</p>
-                    <button>Run Tool</button>
+                    <p>Panduan lengkap instalasi tools penetration testing di Termux.</p>
+                    <button data-url="https://wiki.termux.com/wiki/Main_Page">OPEN TOOLS</button>
                 </div>
-                <div class="tool-card">
-                    <h3>DDOS Cannon</h3>
-                    <p>Lumpuhkan website musuh dalam hitungan detik dengan protokol HTTP Flood.</p>
-                    <button>Activate</button>
-                </div>
-                <div class="tool-card">
-                    <h3>Doxxing Machine</h3>
-                    <p>Cari data pribadi musuh cuma lewat username atau email.</p>
-                    <button>Search Data</button>
+                <div class="tool-card hacking-card">
+                    <div class="status-badge red">DANGER</div>
+                    <h3>Cyber Security Ethics</h3>
+                    <p>Pahami hukum siber sebelum lu berakhir di penjara, b*ngsat.</p>
+                    <button data-url="https://en.wikipedia.org/wiki/Cyber_security_standards">LEGAL INFO</button>
                 </div>
             </div>
         </section>
@@ -66,3 +72,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
