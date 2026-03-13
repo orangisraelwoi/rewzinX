@@ -1,0 +1,171 @@
+/* Import Font Premium */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+:root {
+    --bg-dark: #050505;
+    --card-dark: #0f0f12;
+    --neon-blue: #00d4ff;
+    --neon-purple: #9d00ff;
+    --text-glow: 0 0 10px rgba(0, 212, 255, 0.7);
+    --glass: rgba(255, 255, 255, 0.03);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #e0e0e0;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 50% 50%, #1a1a2e 0%, var(--bg-dark) 80%);
+}
+
+header {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(45deg, #000 0%, #0a0a0a 100%);
+    border-bottom: 3px solid var(--neon-blue);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    color: var(--neon-blue);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    text-shadow: var(--text-glow);
+}
+
+nav {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    list-style: none;
+}
+
+nav a {
+    text-decoration: none;
+    color: #888;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.4s;
+    font-size: 1.1rem;
+}
+
+nav a:hover {
+    color: var(--neon-blue);
+    text-shadow: var(--text-glow);
+    letter-spacing: 2px;
+}
+
+main {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-purple);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+h2::after {
+    content: "";
+    height: 2px;
+    flex-grow: 1;
+    background: linear-gradient(to right, var(--neon-purple), transparent);
+}
+
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.tool-card {
+    background: var(--card-dark);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #222;
+    position: relative;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.tool-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--neon-blue);
+    box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15);
+}
+
+.tool-card h3 {
+    color: var(--neon-blue);
+    margin-bottom: 15px;
+}
+
+/* Custom Click Effect (Ganti Notif Bawaan) */
+button {
+    background: transparent;
+    border: 1px solid var(--neon-purple);
+    color: var(--neon-purple);
+    padding: 12px 25px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: rgba(157, 0, 255, 0.1);
+    box-shadow: 0 0 15px var(--neon-purple);
+}
+
+/* Ganti Notif Jelek: Efek pas diklik */
+button:active {
+    background: var(--neon-purple);
+    color: white;
+    transform: scale(0.95);
+}
+
+/* Card Glow Effect */
+.tool-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transition: 0.5s;
+}
+
+.tool-card:hover::before {
+    left: 100%;
+}
+
+footer {
+    text-align: center;
+    padding: 60px;
+    border-top: 1px solid #111;
+    margin-top: 100px;
+    opacity: 0.6;
+}
