@@ -10,7 +10,7 @@
         :root {
             --bg: #050507;
             --surface: #0f0f12;
-            --accent: #3b82f6; /* Elegant Blue */
+            --accent: #3b82f6; 
             --text: #e2e8f0;
             --text-dim: #94a3b8;
             --glass: rgba(15, 15, 18, 0.95);
@@ -34,187 +34,121 @@
 
         /* HEADER */
         header {
-            height: 40vh; display: flex; flex-direction: column;
+            height: 45vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             padding: 20px;
         }
 
         header h1 {
             font-family: 'JetBrains Mono', monospace; font-size: clamp(2.5rem, 6vw, 4rem);
-            letter-spacing: -3px; color: #fff; margin-bottom: 5px;
+            letter-spacing: -3px; color: #fff; margin-bottom: 25px;
             text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
 
-        /* --- NEW FEATURE: IMAGE SLIDER --- */
+        /* SEAMLESS SLIDER (NO BUTTONS) */
         .slider-container {
             width: 100%;
-            max-width: 800px;
-            height: 300px;
-            margin: 20px auto;
+            max-width: 850px;
+            height: 280px;
+            margin: 0 auto;
             position: relative;
             overflow: hidden;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1px solid #1e293b;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
         .slider-wrapper {
             display: flex;
             width: 100%;
             height: 100%;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
         }
 
         .slide {
             min-width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.7) contrast(1.1);
+            filter: brightness(0.6);
         }
 
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            z-index: 10;
-            border-radius: 50%;
-            font-weight: bold;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-        }
-
-        .slider-btn:hover { background: var(--accent); }
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
-
-        /* --- NEW FEATURE: AUDIO PLAYER UI --- */
-        .audio-player {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--surface);
-            border: 1px solid #1e293b;
-            padding: 12px 20px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 5000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        .audio-info { font-size: 0.7rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
-        .play-btn {
-            background: var(--accent);
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
-
-        /* NAV */
+        /* NAVIGATION */
         nav {
-            position: sticky; top: 0; background: rgba(5, 5, 7, 0.8);
-            backdrop-filter: blur(12px); border-bottom: 1px solid #1e293b;
+            position: sticky; top: 0; background: rgba(5, 5, 7, 0.85);
+            backdrop-filter: blur(15px); border-bottom: 1px solid #1e293b;
             padding: 15px; z-index: 100;
         }
 
         nav ul { display: flex; justify-content: center; list-style: none; gap: 40px; }
-        nav a { text-decoration: none; color: var(--text-dim); font-size: 0.9rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        nav a:hover { color: var(--accent); }
+        nav a { text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; }
+        nav a:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
 
-        /* CONTENT */
+        /* MAIN CONTENT */
         main { max-width: 900px; margin: 60px auto; padding: 0 20px; }
         section { margin-bottom: 100px; }
-        .section-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; display: block; opacity: 0.8; }
+        .section-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; display: block; }
 
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .tool-card {
             background: var(--surface); border: 1px solid #1e293b;
-            padding: 30px; border-radius: 12px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
+            padding: 35px; border-radius: 16px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .tool-card:hover { border-color: var(--accent); transform: translateY(-4px); background: #14141a; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .tool-card h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 600; color: #fff; }
-        .tool-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; }
+        .tool-card:hover { border-color: var(--accent); transform: translateY(-6px); background: #14141a; }
+        .tool-card h3 { font-size: 1.3rem; margin-bottom: 12px; font-weight: 600; color: #fff; }
+        .tool-card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 25px; }
 
         .btn-action {
-            background: #1e293b; color: #fff; border: none; padding: 12px 24px;
-            border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            background: #1e293b; color: #fff; border: none; padding: 14px;
+            border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
             cursor: pointer; transition: 0.3s; font-weight: bold; width: 100%;
         }
 
-        .btn-action:hover { background: var(--accent); color: #fff; }
+        .btn-action:hover { background: var(--accent); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
 
         /* MODAL ARTICLE */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--glass); display: none; z-index: 2000;
-            padding: 40px 20px; overflow-y: auto; backdrop-filter: blur(8px);
+            padding: 40px 20px; overflow-y: auto; backdrop-filter: blur(10px);
         }
 
         .modal-content {
-            background: #0f172a; max-width: 800px; margin: 0 auto;
-            padding: 50px; border-radius: 20px; border: 1px solid #334155;
-            position: relative; animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            background: #0f172a; max-width: 850px; margin: 0 auto;
+            padding: 60px; border-radius: 24px; border: 1px solid #334155;
+            position: relative; animation: slideUp 0.5s ease-out;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
 
         .close-modal {
-            position: absolute; top: 25px; right: 25px; background: #1e293b;
-            border: none; color: #fff; width: 35px; height: 35px; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            position: absolute; top: 30px; right: 30px; background: #1e293b;
+            border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem;
         }
 
-        .modal-article h2 { margin-bottom: 25px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; }
-        .modal-article h4 { margin: 20px 0 10px; color: #fff; }
-        .modal-article p { margin-bottom: 20px; color: #cbd5e1; font-size: 1.05rem; }
-        .modal-article code { background: #1e293b; padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', sans-serif; }
+        .modal-article h2 { margin-bottom: 30px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 2rem; border-left: 5px solid var(--accent); padding-left: 20px; }
+        .modal-article h4 { margin: 25px 0 10px; color: #fff; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+        .modal-article p { margin-bottom: 20px; color: #cbd5e1; font-size: 1.1rem; text-align: justify; }
+        .modal-article code { background: #1e293b; padding: 3px 8px; border-radius: 5px; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
 
-        /* CREDIT */
-        footer { text-align: center; padding: 80px 20px; border-top: 1px solid #1e293b; color: var(--text-dim); font-size: 0.8rem; background: #030305; }
-        .credit-badge { color: var(--accent); font-weight: bold; letter-spacing: 1px; }
+        /* FOOTER */
+        footer { text-align: center; padding: 80px 20px; border-top: 1px solid #1e293b; color: var(--text-dim); }
+        .credit-badge { color: var(--accent); font-weight: bold; }
 
     </style>
 </head>
 <body>
-
-    <div class="audio-player">
-        <button class="play-btn" id="musicBtn">▶</button>
-        <div class="audio-info">
-            <span>SYS_AUDIO: ACTIVE</span><br>
-            <small id="trackName">Lofi_Beats.mp3</small>
-        </div>
-        <audio id="bgMusic" loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
-    </div>
 
     <header>
         <h1>Architect Hub</h1>
         
         <div class="slider-container">
             <div class="slider-wrapper" id="slider">
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" class="slide" alt="Cyber 1">
-                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" class="slide" alt="Cyber 2">
-                <img src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=800&q=80" class="slide" alt="Cyber 3">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80" class="slide" alt="Cyber 1">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" class="slide" alt="Cyber 2">
+                <img src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?auto=format&fit=crop&w=1200&q=80" class="slide" alt="Cyber 3">
             </div>
-            <button class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</button>
-            <button class="slider-btn next-btn" onclick="moveSlide(1)">❯</button>
         </div>
     </header>
 
@@ -232,12 +166,12 @@
             <div class="tool-grid">
                 <div class="tool-card">
                     <h3>Modern JavaScript ES6</h3>
-                    <p>Understanding asynchronous patterns, closures, and the event loop for robust applications.</p>
+                    <p>Mendalami pola asinkron, closure, dan optimasi runtime V8 untuk aplikasi skala besar.</p>
                     <button class="btn-action" onclick="openArticle('coding-js')">Read Specification</button>
                 </div>
                 <div class="tool-card">
                     <h3>Backend Architecture</h3>
-                    <p>Scalable server management using Node.js and distributed database systems.</p>
+                    <p>Manajemen server Node.js dan desain sistem database terdistribusi untuk high-traffic.</p>
                     <button class="btn-action" onclick="openArticle('coding-backend')">Read Specification</button>
                 </div>
             </div>
@@ -248,12 +182,12 @@
             <div class="tool-grid">
                 <div class="tool-card">
                     <h3>Termux Environment</h3>
-                    <p>Optimizing mobile terminal for advanced penetration testing workflows.</p>
+                    <p>Konfigurasi terminal Android untuk efisiensi penetrasi sistem dan otomasi skrip.</p>
                     <button class="btn-action" onclick="openArticle('hacking-termux')">Open Manual</button>
                 </div>
                 <div class="tool-card">
                     <h3>Network Analysis</h3>
-                    <p>Techniques for packet sniffing and vulnerability assessment in wireless networks.</p>
+                    <p>Analisis paket data tingkat lanjut dan identifikasi kerentanan pada protokol jaringan.</p>
                     <button class="btn-action" onclick="openArticle('hacking-network')">Analyze Protocol</button>
                 </div>
             </div>
@@ -264,12 +198,12 @@
             <div class="tool-grid">
                 <div class="tool-card">
                     <h3>System Vulnerabilities</h3>
-                    <p>Archive of common CVEs and their remediation strategies for sysadmins.</p>
+                    <p>Arsip kerentanan kritis (CVE) dan metodologi mitigasi untuk keamanan infrastruktur.</p>
                     <button class="btn-action" onclick="openArticle('record-cve')">Access Archive</button>
                 </div>
                 <div class="tool-card">
                     <h3>Security Ethics</h3>
-                    <p>Deep dive into the legal and ethical boundaries of cybersecurity research.</p>
+                    <p>Prinsip dan batasan hukum dalam riset keamanan siber di era digital modern.</p>
                     <button class="btn-action" onclick="openArticle('record-ethics')">Read Ethics</button>
                 </div>
             </div>
@@ -279,77 +213,87 @@
     <div id="articleModal" class="modal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal()">×</button>
-            <div id="articleBody" class="modal-article">
-                </div>
+            <div id="articleBody" class="modal-article"></div>
         </div>
     </div>
 
     <footer>
         <p>© 2026 Architect Education Core. All Rights Reserved.</p>
-        <p>System Architect: <span class="credit-badge">RezinX</span></p>
+        <p>Lead Architect: <span class="credit-badge">RezinX</span></p>
     </footer>
 
     <script>
-        // 1. MUSIC ENGINE
-        const music = document.getElementById('bgMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        let isPlaying = false;
-
-        musicBtn.addEventListener('click', () => {
-            if (!isPlaying) {
-                music.play();
-                musicBtn.innerText = "⏸";
-                isPlaying = true;
-            } else {
-                music.pause();
-                musicBtn.innerText = "▶";
-                isPlaying = false;
-            }
-        });
-
-        // 2. SLIDER ENGINE
+        // 1. AUTOMATIC SLIDER ENGINE
         let currentSlide = 0;
-        function moveSlide(direction) {
-            const slider = document.getElementById('slider');
-            const totalSlides = document.querySelectorAll('.slide').length;
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        const slider = document.getElementById('slider');
+        const slides = document.querySelectorAll('.slide');
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
+        setInterval(nextSlide, 4500);
 
-        // Auto slide setiap 5 detik
-        setInterval(() => moveSlide(1), 5000);
-
-        // 3. ARTICLE ENGINE
+        // 2. DETAILED ARTICLES
         const articles = {
             'coding-js': {
                 title: 'Modern JavaScript: The ES6+ Paradigm',
                 content: `
-                    <p>JavaScript telah berevolusi dari sekadar pemanis UI menjadi bahasa tingkat tinggi yang mampu menangani komputasi berat.</p>
+                    <p>JavaScript bukan lagi sekadar bahasa skrip browser. Dalam ekosistem modern, pemahaman mendalam tentang runtime engine sangat krusial.</p>
                     <h4>Asynchronous Mastery</h4>
-                    <p>Penggunaan <code>Promise</code> dan <code>async/await</code> mengubah cara kita menangani data.</p>
-                    <h4>Functional Programming</h4>
-                    <p>Fitur seperti <code>Map</code>, <code>Filter</code>, dan <code>Reduce</code> bikin kode lu lebih ringkas.</p>
+                    <p>Mekanisme <code>Event Loop</code> adalah jantung dari JS. Penggunaan <code>Promise.all()</code> untuk eksekusi paralel dan <code>async/await</code> untuk readability bukan hanya soal gaya kode, tapi soal efisiensi thread management agar aplikasi tidak mengalami blocking.</p>
+                    <h4>Memory Management</h4>
+                    <p>Closures memungkinkan enkapsulasi data, namun jika tidak ditangani dengan benar, bisa menyebabkan memory leaks. Memahami Scope Chain adalah perbedaan antara coder amatir dan pro.</p>
                 `
             },
             'coding-backend': {
                 title: 'Scalable Backend Infrastructure',
-                content: `<p>Backend yang tangguh bukan cuma jalan, tapi juga tahan banting.</p><h4>Node.js Event Loop</h4><p>Sistem single-threaded non-blocking I/O.</p>`
+                content: `
+                    <p>Membangun backend yang mampu menangani jutaan request membutuhkan arsitektur yang tangguh.</p>
+                    <h4>Node.js Architecture</h4>
+                    <p>Memanfaatkan arsitektur non-blocking I/O memungkinkan Node.js mengungguli server tradisional dalam hal konkurensi. Namun, kunci skalabilitas ada pada Load Balancing dan Clustering.</p>
+                    <h4>Database Optimization</h4>
+                    <p>Penggunaan Redis sebagai layer caching dapat mengurangi latency database hingga 80% pada query yang repetitif.</p>
+                `
             },
             'hacking-termux': {
-                title: 'Termux: Mobile Penetration Suite',
-                content: `<p>HP Android lu itu sebenernya supercomputer kecil.</p><h4>Environment Setup</h4><p>Gunakan <code>pkg upgrade</code> secara rutin.</p>`
+                title: 'Termux: Advanced Mobile Suite',
+                content: `
+                    <p>Termux mengubah perangkat Android menjadi workstation Linux portabel yang sangat kuat.</p>
+                    <h4>System Hardening</h4>
+                    <p>Keamanan alat lu dimulai dari package yang paling up-to-date. Integrasikan kunci SSH untuk akses remote yang aman tanpa password manual.</p>
+                    <h4>Scripting Automation</h4>
+                    <p>Gunakan Bash atau Python untuk membuat skrip otomasi yang dapat memantau uptime server atau menjalankan audit keamanan terjadwal.</p>
+                `
             },
             'hacking-network': {
-                title: 'Network Analysis & Sniffing',
-                content: `<p>Menganalisa paket data adalah cara terbaik buat nyari celah.</p><h4>Wireshark & Tcpdump</h4><p>Belajar baca protokol TCP/IP.</p>`
+                title: 'Advanced Network Analysis',
+                content: `
+                    <p>Jaringan adalah medan perang utama dalam keamanan siber. Tanpa pemahaman protokol, lu cuma script kiddie.</p>
+                    <h4>Packet Deep Inspection</h4>
+                    <p>Pahami struktur paket TCP/IP: Header, Flags (SYN, ACK, FIN), dan Payload untuk mendeteksi anomali trafik di jaringan lokal.</p>
+                    <h4>Vulnerability Scanning</h4>
+                    <p>Nmap bukan sekadar port scanner. Gunakan Scripting Engine (NSE) untuk mendeteksi kerentanan spesifik secara otomatis.</p>
+                `
             },
             'record-cve': {
-                title: 'Archive: Common Vulnerabilities',
-                content: `<p>Seorang arsitek harus tau apa yang bisa bikin bangunannya roboh.</p><h4>Log4Shell Analysis</h4><p>Vulnerabilitas legendaris.</p>`
+                title: 'Archive: System Vulnerabilities (CVE)',
+                content: `
+                    <p>Mengetahui cara bertahan berarti harus mempelajari setiap celah yang pernah ada.</p>
+                    <h4>Supply Chain Attacks</h4>
+                    <p>Analisis pada kerentanan library pihak ketiga yang membuktikan bahwa dependency management adalah risiko keamanan terbesar saat ini.</p>
+                    <h4>Buffer Overflow</h4>
+                    <p>Memahami bagaimana memori dialokasikan dan bagaimana penulisan data yang tidak divalidasi dapat menyebabkan eksekusi kode arbitrer.</p>
+                `
             },
             'record-ethics': {
-                title: 'Ethics in Digital Frontier',
-                content: `<p>Skill besar harus dibarengi dengan tanggung jawab yang besar, Boss.</p><h4>White Hat vs Black Hat</h4><p>Bedanya cuma satu: Izin.</p>`
+                title: 'Ethics in the Digital Frontier',
+                content: `
+                    <p>Di dunia digital, kode etik adalah navigasi lu agar tidak tersesat dalam kegelapan.</p>
+                    <h4>Responsible Disclosure</h4>
+                    <p>Jika menemukan celah, pro sejati melaporkannya secara privat. Menghancurkan sistem hanya untuk pamer adalah tindakan amatir.</p>
+                    <p><strong>Filosofi RezinX:</strong> Pengetahuan adalah senjata. Gunakan untuk membangun dan melindungi, bukan sekadar merusak untuk validasi sementara.</p>
+                `
             }
         };
 
