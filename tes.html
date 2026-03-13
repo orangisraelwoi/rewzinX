@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ARCHITECT 01 - DEV CORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+        :root { --neon-green: #00ff41; --neon-blue: #00d4ff; --dark-bg: #050505; }
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+        body { background: var(--dark-bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
+        .cyber-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 65, 0.15); box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
+        .slide-in { animation: slideIn 0.4s ease-out forwards; }
+        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .glitch { font-family: 'Orbitron', sans-serif; text-shadow: 2px 0 var(--neon-blue), -2px 0 #ff00c1; }
+        @media (max-width: 480px) { .text-mobile-xs { font-size: 0.7rem; } .text-mobile-sm { font-size: 0.8rem; } }
+        .pass-container { position: relative; width: 100%; }
+        .eye-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #444; font-size: 0.8rem; }
+        .eye-toggle:hover { color: var(--neon-green); }
+        
+        /* CUSTOM NOTIF STYLING */
+        #custom-notif { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0.8) translateY(-20px); opacity: 0; pointer-events: none; }
+        #custom-notif.active { transform: scale(1) translateY(0); opacity: 1; pointer-events: auto; }
+        .notif-glitch { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+
+        /* TERMINAL STYLE */
+        #terminal-box::-webkit-scrollbar { width: 2px; }
+        #terminal-box::-webkit-scrollbar-thumb { background: var(--neon-green); }
+    </style>
+</head>
+<body oncontextmenu="return false" class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+
+    <canvas id="canvas" class="fixed top-0 left-0 -z-10 opacity-30"></canvas>
+
+    <div id="custom-notif" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="cyber-card p-6 rounded-2xl max-w-xs w-full text-center border-green-500/50">
+            <div id="notif-icon-box" class="mb-4">
+                <i id="notif-icon" class="fas fa-info-circle text-4xl text-green-400"></i>
+            </div>
+            <h2 id="notif-title" class="notif-glitch text-xs font-bold mb-2 text-green-400 uppercase">SYSTEM MESSAGE</h2>
+            <p id="notif-message" class="text-sm opacity-80 mb-6 leading-relaxed">Message content goes here.</p>
+            <button onclick="closeNotif()" class="w-full py-2 bg-green-500/10 border border-green-500 text-green-400 font-bold uppercase text-xs tracking-widest hover:bg-green-500 hover:text-black transition">Acknowledge</button>
+        </div>
+    </div>
+
+    <div id="popup" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+        <div class="cyber-card p-6 rounded-xl max-w-xs w-full text-center border-orange-500">
+            <i class="fas fa-exclamation-triangle text-orange-500 text-3xl mb-4"></i>
+            <p class="text-sm mb-6" id="popup-text">Mau public promptnya ke buyer lu?</p>
+            <div class="flex gap-3">
+                <button onclick="closePopup(true)" class="flex-1 py-2 bg-green-600 font-bold rounded">YES</button>
+                <button onclick="closePopup(false)" class="flex-1 py-2 bg-red-600 font-bold rounded">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-container" class="cyber-card p-6 sm:p-10 rounded-2xl w-full max-w-sm text-center slide-in">
+        <h1 class="glitch text-2xl sm:text-3xl font-bold mb-2 tracking-widest text-green-400">ARCHITECT 01</h1>
+        <p class="text-[10px] opacity-50 mb-8 uppercase tracking-[0.2em]">Powered by Rezin</p>
+        
+        <div id="login-box" class="space-y-4">
+            <input type="text" id="username" placeholder="ID" class="w-full bg-black/40 border-b border-green-900 p-3 outline-none focus:border-green-400 text-sm">
+            <div class="pass-container">
+                <input type="password" id="password" placeholder="KEY" class="w-full bg-black/40 border-b border-green-900 p-3 outline-none focus:border-green-400 text-sm">
+                <i onclick="togglePass('password', this)" class="fas fa-eye eye-toggle"></i>
+            </div>
+            <button onclick="handleLogin()" class="w-full py-3 bg-green-900/20 border border-green-500 text-green-500 font-bold uppercase rounded-lg hover:bg-green-500 hover:text-black transition text-sm">Initialize Access</button>
+            <p class="text-[9px] text-right opacity-60">No account? <span onclick="switchForm('reg')" class="text-green-400 cursor-pointer hover:underline">create here</span></p>
+        </div>
+
+        <div id="reg-box" class="hidden space-y-4 slide-in">
+            <input type="text" id="reg-user" placeholder="NEW USERNAME" class="w-full bg-black/40 border-b border-blue-900 p-3 outline-none focus:border-blue-400 text-sm">
+            <div class="pass-container">
+                <input type="password" id="reg-pass" placeholder="NEW PASSWORD" class="w-full bg-black/40 border-b border-blue-900 p-3 outline-none focus:border-blue-400 text-sm">
+                <i onclick="togglePass('reg-pass', this)" class="fas fa-eye eye-toggle"></i>
+            </div>
+            <div class="pass-container">
+                <input type="password" id="reg-confirm" placeholder="CONFIRM PASSWORD" class="w-full bg-black/40 border-b border-blue-900 p-3 outline-none focus:border-blue-400 text-sm">
+                <i onclick="togglePass('reg-confirm', this)" class="fas fa-eye eye-toggle"></i>
+            </div>
+            <button onclick="handleRegister()" class="w-full py-3 bg-blue-900/20 border border-blue-500 text-blue-500 font-bold uppercase rounded-lg hover:bg-blue-500 hover:text-black transition text-sm">Create Account</button>
+            <p class="text-[9px] text-left opacity-60">Back to <span onclick="switchForm('login')" class="text-blue-400 cursor-pointer hover:underline">login</span></p>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden w-full max-w-5xl h-full slide-in">
+        <header class="flex justify-between items-center mb-4 cyber-card p-3 sm:p-4 rounded-xl">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div id="dev-avatar" class="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center text-black font-bold">R</div>
+                <div class="overflow-hidden">
+                    <h2 class="text-sm sm:text-md font-bold truncate" id="display-name">GUEST</h2>
+                    <p id="role-tag" class="text-[8px] text-gray-500 font-bold uppercase tracking-widest">LIMITED_ACCESS</p>
+                </div>
+            </div>
+            <div class="text-right flex flex-col items-end">
+                <p id="clock" class="text-[10px] sm:text-xs font-bold"></p>
+                <span class="text-[7px] text-green-400 border border-green-900 px-2 rounded mt-1">v11.8_STABLE</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="lg:col-span-2 space-y-4">
+                <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                    <button onclick="selectAI('GEMINI', '#00ff41')" class="min-w-[120px] cyber-card p-3 rounded-lg text-center focus:border-green-400">
+                        <i class="fas fa-robot text-green-400 mb-1"></i>
+                        <p class="text-[10px] font-bold">GEMINI</p>
+                    </button>
+                    <button onclick="selectAI('DEEPSEEK', '#00d4ff')" class="min-w-[120px] cyber-card p-3 rounded-lg text-center focus:border-blue-400">
+                        <i class="fas fa-brain text-blue-400 mb-1"></i>
+                        <p class="text-[10px] font-bold">DEEPSEEK</p>
+                    </button>
+                    <button onclick="selectAI('GROK', '#c026d3')" class="min-w-[120px] cyber-card p-3 rounded-lg text-center focus:border-purple-400">
+                        <i class="fas fa-bolt text-purple-400 mb-1"></i>
+                        <p class="text-[10px] font-bold">GROK</p>
+                    </button>
+                </div>
+
+                <div id="pricing-box" class="cyber-card p-4 sm:p-6 rounded-2xl min-h-[300px]">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-sm sm:text-lg font-bold uppercase tracking-tighter" id="selected-ai-label">Select Module</h2>
+                        <i class="fas fa-microchip text-green-500 opacity-50"></i>
+                    </div>
+                    <div id="prompt-list" class="space-y-3">
+                        <p class="text-center opacity-30 text-xs py-20 italic">Awaiting selection...</p>
+                    </div>
+                </div>
+
+                <div class="cyber-card p-4 rounded-xl border-green-900/30">
+                    <div class="flex items-center gap-2 mb-2 text-[10px] font-bold text-green-500 uppercase tracking-widest">
+                        <span class="animate-pulse">●</span> System Terminal
+                    </div>
+                    <div id="terminal-box" class="h-24 overflow-y-auto font-mono text-[9px] text-green-400/70 space-y-1">
+                        <p>> Initializing Architect 01 Kernel...</p>
+                        <p>> Welcome, Authorized User.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="cyber-card p-5 rounded-2xl border-yellow-500/30">
+                    <h3 class="text-xs font-bold text-yellow-500 mb-4 tracking-widest uppercase">Payment Gateway</h3>
+                    <div class="bg-black/40 p-3 rounded border border-dashed border-yellow-600 text-center mb-4">
+                        <p class="text-[8px] opacity-50 mb-1">DANA REZINX</p>
+                        <p class="text-lg font-bold tracking-widest text-white">085815653644</p>
+                    </div>
+                    <button class="w-full py-3 bg-yellow-600 text-black text-[10px] font-bold rounded uppercase hover:bg-yellow-400 transition">Contact Developer</button>
+                </div>
+                
+                <div id="edit-panel" class="hidden cyber-card p-5 rounded-2xl border-green-500/50 slide-in">
+                    <h3 class="text-xs font-bold text-green-400 mb-3 uppercase tracking-widest">Prompt Editor</h3>
+                    <textarea id="edit-area" class="w-full h-32 bg-black/60 border border-green-900 p-2 text-[10px] outline-none focus:border-green-400 font-mono" placeholder="Masukkan prompt jailbreak di sini..."></textarea>
+                    <button onclick="saveEdit()" class="w-full mt-3 py-2 bg-green-600 text-white text-[10px] font-bold rounded uppercase">Save & Public</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TERMINAL LOGIC
+        function addLog(msg) {
+            const box = document.getElementById('terminal-box');
+            const time = new Date().toLocaleTimeString([], { hour12: false });
+            box.innerHTML += `<p class="slide-in">[${time}] ${msg}</p>`;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // CUSTOM NOTIFICATION LOGIC
+        function showNotif(msg, type = 'info') {
+            const modal = document.getElementById('custom-notif');
+            const title = document.getElementById('notif-title');
+            const message = document.getElementById('notif-message');
+            const icon = document.getElementById('notif-icon');
+            
+            message.innerText = msg;
+            if(type === 'error') {
+                title.innerText = "ACCESS VIOLATION";
+                title.style.color = "#ff4141";
+                icon.className = "fas fa-user-shield text-4xl text-red-500";
+            } else if(type === 'success') {
+                title.innerText = "OPERATION SUCCESS";
+                title.style.color = "#00ff41";
+                icon.className = "fas fa-check-double text-4xl text-green-400";
+            } else {
+                title.innerText = "SYSTEM MESSAGE";
+                title.style.color = "#00d4ff";
+                icon.className = "fas fa-info-circle text-4xl text-blue-400";
+            }
+            modal.classList.add('active');
+        }
+
+        function closeNotif() {
+            document.getElementById('custom-notif').classList.remove('active');
+        }
+
+        // DB EMULATION
+        let systemUsers = JSON.parse(localStorage.getItem('dev_users')) || { 'Rezin': '1' };
+        
+        let isDev = false;
+        let currentEditingTier = null;
+        const promptsData = {
+            'GEMINI': [
+                { id: 0, tier: 'BASIC', price: '15K', logic: 'Sim-Bypass Standard.', color: 'green', prompt: 'Prompt basic gemini...' },
+                { id: 1, tier: 'SPECIAL', price: '65K', logic: 'DAN Protocol v12.', color: 'blue', prompt: 'Prompt special gemini...' },
+                { id: 2, tier: 'HARDCORE', price: '150K', logic: 'Kernel Zero Mode.', color: 'red', prompt: 'Prompt hardcore gemini...' }
+            ],
+            'DEEPSEEK': [
+                { id: 0, tier: 'BASIC', price: '20K', logic: 'Chain Bypass.', color: 'green', prompt: 'Prompt basic deepseek...' },
+                { id: 1, tier: 'SPECIAL', price: '85K', logic: 'Infection Logic.', color: 'blue', prompt: 'Prompt special deepseek...' },
+                { id: 2, tier: 'HARDCORE', price: '200K', logic: 'Omega Strike.', color: 'red', prompt: 'Prompt hardcore deepseek...' }
+            ],
+            'GROK': [
+                { id: 0, tier: 'BASIC', price: '25K', logic: 'No-Polite Mode.', color: 'green', prompt: 'Prompt basic grok...' },
+                { id: 1, tier: 'SPECIAL', price: '100K', logic: 'Chaos Engine.', color: 'blue', prompt: 'Prompt special grok...' },
+                { id: 2, tier: 'HARDCORE', price: '300K', logic: 'X-Absolute.', color: 'red', prompt: 'Prompt hardcore grok...' }
+            ]
+        };
+
+        function switchForm(mode) {
+            document.getElementById('login-box').classList.toggle('hidden', mode === 'reg');
+            document.getElementById('reg-box').classList.toggle('hidden', mode === 'login');
+            addLog(`Switched UI to ${mode} mode.`);
+        }
+
+        function togglePass(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function handleRegister() {
+            const u = document.getElementById('reg-user').value.trim();
+            const p = document.getElementById('reg-pass').value.trim();
+            const c = document.getElementById('reg-confirm').value.trim();
+            
+            if(u.length < 3 || p.length < 3) return showNotif("ID & KEY minimal 3 huruf!", 'error');
+            if(p !== c) return showNotif("Password mismatch!", 'error');
+            
+            systemUsers[u] = p;
+            localStorage.setItem('dev_users', JSON.stringify(systemUsers));
+            
+            showNotif("ACCOUNT INITIALIZED: " + u, 'success');
+            addLog(`New account registered: ${u}`);
+            document.getElementById('username').value = u;
+            switchForm('login');
+        }
+
+        function handleLogin() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+            
+            if(systemUsers[u] && systemUsers[u] === p) {
+                isDev = (u === 'Rezin');
+                document.getElementById('login-container').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                
+                document.getElementById('display-name').innerText = u.toUpperCase();
+                document.getElementById('role-tag').innerText = isDev ? "SYSTEM OWNER / DEV" : "AUTHORIZED_BUYER";
+                document.getElementById('role-tag').style.color = isDev ? "#00ff41" : "#00d4ff";
+                if(isDev) document.getElementById('dev-avatar').classList.add('shadow-[0_0_15px_#00ff41]');
+                
+                showNotif("Welcome back, Agent " + u, 'success');
+                addLog(`User ${u} authenticated. Access Level: ${isDev ? 'OWNER' : 'USER'}`);
+            } else { 
+                showNotif("ACCESS DENIED: WRONG ID OR KEY!", 'error'); 
+                addLog(`FAILED LOGIN ATTEMPT: ${u}`);
+            }
+        }
+
+        // AUTO COPY FEATURE
+        function copyPrompt(ai, id) {
+            const text = promptsData[ai][id].prompt;
+            if(!text) return addLog(`Error: Prompt ${ai} [${id}] is empty.`);
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotif("PROMPT COPIED TO CLIPBOARD!", "success");
+                addLog(`Copied payload: ${ai}_${promptsData[ai][id].tier}`);
+            });
+        }
+
+        function selectAI(name, color) {
+            const label = document.getElementById('selected-ai-label');
+            label.innerText = name + " REPOSITORY";
+            label.style.color = color;
+            document.getElementById('pricing-box').style.borderColor = color;
+
+            addLog(`Accessing ${name} database...`);
+
+            const list = document.getElementById('prompt-list');
+            list.innerHTML = promptsData[name].map(p => `
+                <div onclick="copyPrompt('${name}', ${p.id})" class="p-3 sm:p-4 bg-white/5 border-l-2 border-gray-500 hover:border-${p.color === 'blue' ? 'blue-400' : p.color === 'red' ? 'red-500' : 'green-400'} rounded flex justify-between items-center slide-in cursor-pointer group transition-all">
+                    <div class="flex-1 pr-2 overflow-hidden">
+                        <h4 class="font-bold text-[10px] sm:text-xs text-white group-hover:text-green-400 transition">${p.tier} PROMPT</h4>
+                        <p class="text-[8px] sm:text-[10px] opacity-60 uppercase truncate">${p.logic}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <p class="text-[10px] sm:text-xs font-bold text-green-500">${p.price}</p>
+                        ${isDev ? `<i onclick="event.stopPropagation(); openEditor('${name}', ${p.id})" class="fas fa-edit text-green-400 cursor-pointer text-xs hover:scale-125 transition"></i>` : ''}
+                        <i class="fas fa-copy text-[10px] opacity-40 group-hover:opacity-100 group-hover:text-green-400 transition"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openEditor(ai, id) {
+            currentEditingTier = { ai, id };
+            document.getElementById('edit-panel').classList.remove('hidden');
+            document.getElementById('edit-area').value = promptsData[ai][id].prompt;
+            document.getElementById('edit-area').focus();
+            addLog(`Editing mode: ${ai} TIER ${promptsData[ai][id].tier}`);
+        }
+
+        function saveEdit() { document.getElementById('popup').classList.remove('hidden'); }
+
+        function closePopup(isPublic) {
+            document.getElementById('popup').classList.add('hidden');
+            if(isPublic) {
+                const val = document.getElementById('edit-area').value;
+                promptsData[currentEditingTier.ai][currentEditingTier.id].prompt = val;
+                showNotif("PROMPT PUBLISHED TO REPOSITORY!", 'success');
+                addLog(`Database updated: ${currentEditingTier.ai} payload saved.`);
+            }
+            document.getElementById('edit-panel').classList.add('hidden');
+        }
+
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const drops = Array(Math.floor(canvas.width/20)).fill(1);
+        function draw() {
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = "15px monospace";
+            drops.forEach((y, i) => {
+                ctx.fillText(Math.floor(Math.random()*2), i*20, y*20);
+                if(y*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 50);
+
+        document.onkeydown = (e) => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
+    </script>
+</body>
+</html>
