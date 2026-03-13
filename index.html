@@ -16,47 +16,49 @@
             --glass: rgba(15, 15, 18, 0.95);
         }
 
-        /* --- LOADING SCREEN OVERLAY --- */
+        /* --- ADVANCED LOADING SCREEN --- */
         #loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        .loader-logo {
+        /* Neon Rotating Gear Logo */
+        .loader-gear {
             width: 80px; height: 80px;
-            border: 4px solid transparent;
-            border-top: 4px solid var(--accent);
+            border: 8px dashed var(--accent);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            position: relative; margin-bottom: 20px;
+            animation: gearSpin 2s linear infinite;
+            filter: drop-shadow(0 0 10px var(--accent));
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 25px;
         }
 
-        .loader-logo::before {
-            content: "RX"; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); color: var(--accent);
-            font-family: 'JetBrains Mono', monospace; font-weight: bold; font-size: 1.2rem;
-            animation: pulse 1.5s ease-in-out infinite;
+        .loader-gear::after {
+            content: "RX"; font-family: 'JetBrains Mono', monospace;
+            color: #fff; font-size: 1.2rem; font-weight: bold;
+            animation: pulse 1s ease-in-out infinite;
         }
 
         .loading-text {
             font-family: 'JetBrains Mono', monospace; color: var(--text);
-            font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase;
+            font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px;
         }
 
         .progress-container {
-            width: 200px; height: 4px; background: #1e293b; border-radius: 10px; overflow: hidden;
+            width: 250px; height: 2px; background: #1e293b; border-radius: 5px; overflow: hidden;
         }
 
         #progress-bar {
             width: 0%; height: 100%; background: var(--accent);
-            box-shadow: 0 0 15px var(--accent); transition: width 0.2s;
+            box-shadow: 0 0 20px var(--accent);
+            transition: width 0.4s cubic-bezier(0.1, 0.7, 1.0, 0.1);
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes gearSpin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
 
-        /* --- ORIGINAL CODE START --- */
+        /* --- CORE CSS --- */
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body {
             background: var(--bg);
@@ -156,7 +158,10 @@
             padding: clamp(25px, 5vw, 50px); border-radius: 20px; 
             border: 1px solid #334155;
             position: relative; overflow-y: auto;
+            animation: slideUp 0.4s ease-out;
         }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         .close-modal {
             position: sticky; top: -10px; float: right; background: #1e293b;
@@ -174,9 +179,11 @@
 
     </style>
 </head>
-<body style="overflow: hidden;"> <div id="loader-wrapper">
-        <div class="loader-logo"></div>
-        <div class="loading-text" id="load-status">Loading Wait...</div>
+<body style="overflow: hidden;">
+
+    <div id="loader-wrapper">
+        <div class="loader-gear"></div>
+        <div class="loading-text" id="load-status">ARCHITECT_BOOT_CORE...</div>
         <div class="progress-container">
             <div id="progress-bar"></div>
         </div>
@@ -280,56 +287,137 @@
     </footer>
 
     <script>
-        // --- DYNAMIC LOADER SCRIPT ---
-        window.addEventListener('load', () => {
-            const progressBar = document.getElementById('progress-bar');
-            const statusText = document.getElementById('load-status');
-            const loader = document.getElementById('loader-wrapper');
-            let width = 0;
+        // --- REAL LOADING LOGIC ---
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('load-status');
+        let width = 0;
 
-            // Simulasi deteksi koneksi (Network Speed Simulation)
-            const speed = navigator.connection ? navigator.connection.downlink : 5; 
-            const intervalTime = speed < 2 ? 100 : 30; // Jika internet lambat, bar jalan lebih pelan
+        // Interval simulasi awal (85% progres nunggu file beneran keload)
+        const loadingInterval = setInterval(() => {
+            if (width < 85) {
+                width += Math.random() * 1.5;
+                progressBar.style.width = width + '%';
+                statusText.innerText = `Establishing Link... ${Math.round(width)}%`;
+            }
+        }, 80);
 
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    statusText.innerText = "System Ready!";
-                    setTimeout(() => {
-                        loader.style.opacity = '0';
-                        loader.style.transition = '0.5s';
-                        document.body.style.overflow = 'auto'; // Unlock scroll
-                        setTimeout(() => loader.style.display = 'none', 500);
-                    }, 500);
-                } else {
-                    width++;
-                    progressBar.style.width = width + '%';
-                    statusText.innerText = `Establishing Connection... ${width}%`;
-                }
-            }, intervalTime);
-        });
+        // Pas semua asset (gambar/script) selesai di-load oleh browser
+        window.onload = () => {
+            clearInterval(loadingInterval);
+            progressBar.style.width = '100%';
+            statusText.innerText = 'System Optimized. Ready.';
+            
+            setTimeout(() => {
+                const loader = document.getElementById('loader-wrapper');
+                loader.style.opacity = '0';
+                loader.style.transition = '0.8s ease';
+                document.body.style.overflow = 'auto'; // Aktifkan scroll
+                setTimeout(() => loader.style.display = 'none', 800);
+            }, 600);
+        };
 
-        // --- SLIDER ENGINE ---
+        // --- AUTOMATIC SLIDER ---
         let currentSlide = 0;
         const slider = document.getElementById('slider');
         const slides = document.querySelectorAll('.slide');
+        
         function nextSlide() {
             currentSlide = (currentSlide + 1) % slides.length;
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
         }
         setInterval(nextSlide, 4000);
 
-        // --- ARTICLES DATA ---
+        // --- FULL ARTICLE REPOSITORY ---
         const articles = {
-            'coding-js': { title: 'Modern JavaScript: The ES6+ Paradigm', content: `<p>JS modern... (isi artikel lu tetap sama)</p>` },
-            'coding-backend': { title: 'Scalable Backend Infrastructure', content: `<p>Backend... (isi artikel lu tetap sama)</p>` },
-            'coding-react': { title: 'React Core: Virtual DOM Logic', content: `<p>React... (isi artikel lu tetap sama)</p>` },
-            'hacking-termux': { title: 'Termux: Advanced Mobile Workstation', content: `<p>Termux... (isi artikel lu tetap sama)</p>` },
-            'hacking-network': { title: 'Advanced Network Analysis', content: `<p>Network... (isi artikel lu tetap sama)</p>` },
-            'hacking-api': { title: 'API Exploitation & JWT Security', content: `<p>API... (isi artikel lu tetap sama)</p>` },
-            'record-cve': { title: 'Critical CVE Archive 2026', content: `<p>CVE... (isi artikel lu tetap sama)</p>` },
-            'record-ethics': { title: 'Ethics in Digital Frontier', content: `<p>Ethics... (isi artikel lu tetap sama)</p>` },
-            'record-shadow': { title: 'Shadow IT: The Silent Killer', content: `<p>Shadow... (isi artikel lu tetap sama)</p>` }
+            'coding-js': {
+                title: 'Modern JavaScript: The ES6+ Paradigm',
+                content: `
+                    <p>JavaScript modern bukan hanya soal sintaks baru, tapi soal bagaimana lu mengelola <strong>Execution Context</strong>.</p>
+                    <h4>V8 Engine Runtime</h4>
+                    <p>Memahami bagaimana <code>Call Stack</code> dan <code>Callback Queue</code> berinteraksi. Penggunaan <code>Microtasks</code> (seperti Promise) selalu diprioritaskan di atas <code>Macrotasks</code> (seperti setTimeout).</p>
+                    <h4>Closures & Memory</h4>
+                    <p>Closures memungkinkan fungsi memiliki akses ke scope induknya bahkan setelah fungsi induk selesai. Hati-hati dengan <em>Memory Leaks</em> pada variabel global yang tidak terpakai.</p>
+                `
+            },
+            'coding-backend': {
+                title: 'Scalable Backend Infrastructure',
+                content: `
+                    <p>Infrastruktur yang kuat harus bisa menangani jutaan request tanpa <code>downtime</code>.</p>
+                    <h4>Horizontal vs Vertical Scaling</h4>
+                    <p>Jangan cuma upgrade RAM (Vertical). Belajarlah menggunakan <strong>Load Balancer</strong> untuk membagi beban ke beberapa server sekaligus (Horizontal).</p>
+                    <h4>Caching Layer</h4>
+                    <p>Gunakan Redis untuk menyimpan data yang sering diakses agar database lu nggak "meledak" kena query terus menerus.</p>
+                `
+            },
+            'coding-react': {
+                title: 'React Core: Virtual DOM Logic',
+                content: `
+                    <p>Kenapa React cepat? Jawabannya adalah <strong>Reconciliation</strong>.</p>
+                    <h4>Diffing Algorithm</h4>
+                    <p>React membuat salinan DOM di memori. Saat ada perubahan, React membandingkan (diffing) versi lama dan baru, lalu hanya mengupdate bagian yang berubah saja di browser asli.</p>
+                    <h4>State Management</h4>
+                    <p>Hindari <em>Prop Drilling</em> dengan menggunakan <code>Context API</code> atau <code>Zustand</code> untuk aplikasi yang lebih kompleks.</p>
+                `
+            },
+            'hacking-termux': {
+                title: 'Termux: Advanced Mobile Workstation',
+                content: `
+                    <p>Ubah HP Android lu jadi alat audit keamanan yang powerfull.</p>
+                    <h4>Root vs Non-Root</h4>
+                    <p>Banyak tools memerlukan akses <code>superuser</code> untuk manipulasi packet jaringan. Gunakan <code>proot</code> jika device lu belum di-root untuk simulasi linux distro.</p>
+                    <h4>Metasploit on Termux</h4>
+                    <p>Gunakan script installer terpercaya untuk menjalankan framework exploitasi langsung dari saku lu.</p>
+                `
+            },
+            'hacking-network': {
+                title: 'Advanced Network Analysis',
+                content: `
+                    <p>Jaringan adalah pintu masuk utama. Kalau lu paham protokol, lu pegang kuncinya.</p>
+                    <h4>Man-In-The-Middle (MITM)</h4>
+                    <p>Teknik mencegat data antara user dan server. Gunakan <code>Bettercap</code> untuk melihat bagaimana data sensitif seperti password bisa tercuri jika protokol <code>HTTPS</code> tidak diimplementasikan dengan benar.</p>
+                    <h4>DNS Poisoning</h4>
+                    <p>Memalsukan alamat IP dari sebuah domain untuk mengalihkan traffic ke server palsu milik lu.</p>
+                `
+            },
+            'hacking-api': {
+                title: 'API Exploitation & JWT Security',
+                content: `
+                    <p>Zaman sekarang hampir semua data lewat API. Di situlah letak kelemahannya.</p>
+                    <h4>JWT Bypass</h4>
+                    <p>JSON Web Token seringkali memiliki celah jika signature-nya tidak divalidasi dengan ketat. Lu bisa mencoba mengubah algoritma menjadi <code>none</code> untuk bypass otentikasi.</p>
+                    <h4>BOLA Exploitation</h4>
+                    <p>Mengganti ID pada endpoint API (misal: <code>/user/100</code> jadi <code>/user/101</code>) untuk melihat data orang lain.</p>
+                `
+            },
+            'record-cve': {
+                title: 'Critical CVE Archive 2026',
+                content: `
+                    <p>Catatan kerentanan sistem yang paling berbahaya di tahun ini.</p>
+                    <h4>Zero-Day Attacks</h4>
+                    <p>Analisis serangan yang mengeksploitasi celah sebelum developer sempat membuat patch. Fokus pada celah <strong>RCE (Remote Code Execution)</strong> pada kernel linux terbaru.</p>
+                    <h4>Patch Management</h4>
+                    <p>Cara terbaik mitigasi adalah update berkala. Jangan biarkan sistem lu menjalankan software versi usang.</p>
+                `
+            },
+            'record-ethics': {
+                title: 'Ethics in Digital Frontier',
+                content: `
+                    <p>Punya skill dewa tapi nggak punya etika? Lu cuma kriminal biasa, Boss.</p>
+                    <h4>Responsible Disclosure</h4>
+                    <p>Kalau nemu bug, laporin ke pemiliknya (Bug Bounty). Jangan dijual ke forum darkweb kalau lu mau dihargai sebagai <strong>White Hat</strong>.</p>
+                    <p><strong>Filosofi RezinX:</strong> Power without control is just chaos. Control without knowledge is just a dream.</p>
+                `
+            },
+            'record-shadow': {
+                title: 'Shadow IT: The Silent Killer',
+                content: `
+                    <p>Banyak karyawan pakai software/hardware tanpa izin IT. Ini adalah lubang keamanan terbesar.</p>
+                    <h4>Unmanaged Devices</h4>
+                    <p>HP atau laptop pribadi yang konek ke wifi kantor tanpa enkripsi standar bisa jadi pintu masuk malware ke database utama.</p>
+                    <h4>Cloud Sprawl</h4>
+                    <p>Data perusahaan yang ditaruh di cloud pribadi (Google Drive/Dropbox) tanpa pengawasan admin sangat rentan bocor.</p>
+                `
+            }
         };
 
         function openArticle(id) {
@@ -342,12 +430,10 @@
 
         function closeModal() {
             document.getElementById('articleModal').style.display = 'none';
-            if(document.getElementById('loader-wrapper').style.display === 'none') {
-                document.body.style.overflow = 'auto';
-            }
+            document.body.style.overflow = 'auto';
         }
 
-        window.onclick = (event) => {
+        window.onclick = function(event) {
             const modal = document.getElementById('articleModal');
             if (event.target == modal) closeModal();
         }
