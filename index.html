@@ -32,19 +32,18 @@
             z-index: -1;
         }
 
-        /* HEADER */
+        /* HEADER - SUBTITLE REMOVED FOR SIMPLICITY */
         header {
-            height: 50vh; display: flex; flex-direction: column;
+            height: 40vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             padding: 20px;
         }
 
         header h1 {
-            font-family: 'JetBrains Mono', monospace; font-size: clamp(2rem, 5vw, 3.5rem);
-            letter-spacing: -2px; color: #fff; margin-bottom: 15px;
+            font-family: 'JetBrains Mono', monospace; font-size: clamp(2.5rem, 6vw, 4rem);
+            letter-spacing: -3px; color: #fff; margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
-
-        header p { color: var(--text-dim); max-width: 500px; font-size: 1rem; }
 
         /* NAV */
         nav {
@@ -54,59 +53,62 @@
         }
 
         nav ul { display: flex; justify-content: center; list-style: none; gap: 40px; }
-        nav a { text-decoration: none; color: var(--text-dim); font-size: 0.9rem; font-weight: 600; transition: 0.3s; }
+        nav a { text-decoration: none; color: var(--text-dim); font-size: 0.9rem; font-weight: 600; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         nav a:hover { color: var(--accent); }
 
         /* CONTENT */
         main { max-width: 900px; margin: 60px auto; padding: 0 20px; }
-        section { margin-bottom: 80px; }
-        .section-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; display: block; }
+        section { margin-bottom: 100px; }
+        .section-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; display: block; opacity: 0.8; }
 
         .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .tool-card {
             background: var(--surface); border: 1px solid #1e293b;
             padding: 30px; border-radius: 12px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
         }
 
-        .tool-card:hover { border-color: var(--accent); transform: translateY(-4px); background: #14141a; }
-        .tool-card h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 600; }
-        .tool-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; }
+        .tool-card:hover { border-color: var(--accent); transform: translateY(-4px); background: #14141a; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .tool-card h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 600; color: #fff; }
+        .tool-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; }
 
         .btn-action {
-            background: #1e293b; color: #fff; border: none; padding: 10px 20px;
-            border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
-            cursor: pointer; transition: 0.3s;
+            background: #1e293b; color: #fff; border: none; padding: 12px 24px;
+            border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            cursor: pointer; transition: 0.3s; font-weight: bold; width: 100%;
         }
 
-        .btn-action:hover { background: var(--accent); }
+        .btn-action:hover { background: var(--accent); color: #fff; }
 
         /* MODAL ARTICLE */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--glass); display: none; z-index: 2000;
-            padding: 40px 20px; overflow-y: auto;
+            padding: 40px 20px; overflow-y: auto; backdrop-filter: blur(8px);
         }
 
         .modal-content {
             background: #0f172a; max-width: 800px; margin: 0 auto;
-            padding: 40px; border-radius: 16px; border: 1px solid #334155;
-            position: relative; animation: slideUp 0.4s ease-out;
+            padding: 50px; border-radius: 20px; border: 1px solid #334155;
+            position: relative; animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
         .close-modal {
-            position: absolute; top: 20px; right: 20px; background: none;
-            border: none; color: var(--text-dim); font-size: 1.5rem; cursor: pointer;
+            position: absolute; top: 25px; right: 25px; background: #1e293b;
+            border: none; color: #fff; width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
-        .modal-article h2 { margin-bottom: 20px; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
-        .modal-article p { margin-bottom: 15px; color: #cbd5e1; }
-        .modal-article ul { margin: 15px 20px; color: #cbd5e1; }
+        .modal-article h2 { margin-bottom: 25px; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; }
+        .modal-article h4 { margin: 20px 0 10px; color: #fff; }
+        .modal-article p { margin-bottom: 20px; color: #cbd5e1; font-size: 1.05rem; }
+        .modal-article code { background: #1e293b; padding: 2px 6px; border-radius: 4px; color: var(--accent); font-family: 'JetBrains Mono', sans-serif; }
 
         /* CREDIT */
-        footer { text-align: center; padding: 60px; border-top: 1px solid #1e293b; color: var(--text-dim); font-size: 0.8rem; }
-        .credit-badge { color: var(--accent); font-weight: bold; }
+        footer { text-align: center; padding: 80px 20px; border-top: 1px solid #1e293b; color: var(--text-dim); font-size: 0.8rem; background: #030305; }
+        .credit-badge { color: var(--accent); font-weight: bold; letter-spacing: 1px; }
 
     </style>
 </head>
@@ -114,7 +116,6 @@
 
     <header>
         <h1>Architect Hub</h1>
-        <p>Advanced educational portal curated by RezinX. Logic is the only law.</p>
     </header>
 
     <nav>
@@ -150,6 +151,27 @@
                     <p>Optimizing mobile terminal for advanced penetration testing workflows.</p>
                     <button class="btn-action" onclick="openArticle('hacking-termux')">Open Manual</button>
                 </div>
+                <div class="tool-card">
+                    <h3>Network Analysis</h3>
+                    <p>Techniques for packet sniffing and vulnerability assessment in wireless networks.</p>
+                    <button class="btn-action" onclick="openArticle('hacking-network')">Analyze Protocol</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="database">
+            <span class="section-title">03 / Data Records</span>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h3>System Vulnerabilities</h3>
+                    <p>Archive of common CVEs and their remediation strategies for sysadmins.</p>
+                    <button class="btn-action" onclick="openArticle('record-cve')">Access Archive</button>
+                </div>
+                <div class="tool-card">
+                    <h3>Security Ethics</h3>
+                    <p>Deep dive into the legal and ethical boundaries of cybersecurity research.</p>
+                    <button class="btn-action" onclick="openArticle('record-ethics')">Read Ethics</button>
+                </div>
             </div>
         </section>
     </main>
@@ -164,7 +186,7 @@
 
     <footer>
         <p>© 2026 Architect Education Core. All Rights Reserved.</p>
-        <p>Authored by <span class="credit-badge">RezinX</span> & Architect 01</p>
+        <p>System Architect: <span class="credit-badge">RezinX</span></p>
     </footer>
 
     <script>
@@ -172,28 +194,61 @@
             'coding-js': {
                 title: 'Modern JavaScript: The ES6+ Paradigm',
                 content: `
-                    <p>JavaScript bukan lagi sekadar bahasa mainan untuk animasi browser. Dalam ekosistem modern, JS adalah jantung dari aplikasi web kompleks.</p>
-                    <p><strong>1. Asynchronous Programming:</strong> Penggunaan <code>async/await</code> memungkinkan kita menangani operasi I/O yang berat tanpa memblokir thread utama.</p>
-                    <p><strong>2. Memory Management:</strong> Memahami bagaimana <i>Garbage Collector</i> bekerja di engine V8 sangat penting untuk mencegah memory leaks pada aplikasi besar.</p>
-                    <p><strong>3. DOM Optimization:</strong> Belajar bagaimana manipulasi DOM yang efisien untuk menjaga performa rendering di angka 60fps.</p>
+                    <p>JavaScript telah berevolusi dari sekadar pemanis UI menjadi bahasa tingkat tinggi yang mampu menangani komputasi berat.</p>
+                    <h4>Asynchronous Mastery</h4>
+                    <p>Penggunaan <code>Promise</code> dan <code>async/await</code> mengubah cara kita menangani data. Tanpa ini, aplikasi lu bakal freeze saat nunggu respon server.</p>
+                    <h4>Functional Programming</h4>
+                    <p>Fitur seperti <code>Map</code>, <code>Filter</code>, dan <code>Reduce</code> bikin kode lu lebih ringkas dan gampang di-debug. Jangan lagi pake for-loop jadul kalau gak terpaksa.</p>
+                    <p><i>Note: Selalu gunakan 'const' kecuali variabel itu beneran harus diubah nilainya.</i></p>
                 `
             },
             'coding-backend': {
                 title: 'Scalable Backend Infrastructure',
                 content: `
-                    <p>Membangun backend yang tangguh membutuhkan pemahaman tentang bagaimana data mengalir di antara layanan.</p>
-                    <p><strong>Arsitektur Microservices:</strong> Membagi sistem besar menjadi layanan-layanan kecil yang independen menggunakan Node.js.</p>
-                    <p><strong>Database Scaling:</strong> Perbedaan antara SQL untuk integritas data dan NoSQL untuk skalabilitas horizontal yang cepat.</p>
-                    <p><strong>Security Layer:</strong> Implementasi JWT (JSON Web Tokens) dan enkripsi Bcrypt untuk menjaga autentikasi user tetap aman.</p>
+                    <p>Backend yang bagus bukan cuma jalan, tapi juga tahan banting saat diserbu ribuan user.</p>
+                    <h4>Node.js Event Loop</h4>
+                    <p>Node.js pake sistem single-threaded non-blocking I/O. Ini rahasia kenapa dia bisa nanganin ribuan koneksi sekaligus dengan resource kecil.</p>
+                    <h4>API Security</h4>
+                    <p>Gunakan <code>Helmet.js</code> buat ngamanin header HTTP lu, dan jangan lupa implementasi Rate Limiting biar server gak jebol kena serangan Brute Force.</p>
                 `
             },
             'hacking-termux': {
                 title: 'Termux: Mobile Penetration Suite',
                 content: `
-                    <p>Termux adalah emulator terminal Android yang sangat powerful jika dikonfigurasi dengan benar.</p>
-                    <p><strong>Essential Packages:</strong> Selalu mulai dengan menginstall <code>python</code>, <code>git</code>, <code>nmap</code>, dan <code>metasploit-framework</code>.</p>
-                    <p><strong>Workflow:</strong> Gunakan <code>ssh</code> untuk mengontrol Termux dari PC agar pengetikan script lebih presisi dan cepat.</p>
-                    <p><strong>Storage Access:</strong> Gunakan perintah <code>termux-setup-storage</code> untuk memberikan izin akses file sistem ke terminal lu.</p>
+                    <p>HP Android lu itu sebenernya supercomputer kecil kalau lu tau cara pakenya.</p>
+                    <h4>Environment Setup</h4>
+                    <p>Gunakan <code>pkg upgrade</code> secara rutin. Keamanan terminal lu tergantung dari update package yang terbaru.</p>
+                    <h4>Automation Script</h4>
+                    <p>Belajar Bash scripting buat otomatisasi tugas-tugas repetitif. Sekali klik, semua tools nmap sampai metasploit jalan otomatis.</p>
+                `
+            },
+            'hacking-network': {
+                title: 'Network Analysis & Sniffing',
+                content: `
+                    <p>Menganalisa paket data adalah cara terbaik buat nyari celah di aplikasi web atau network lokal.</p>
+                    <h4>Wireshark & Tcpdump</h4>
+                    <p>Belajar baca protokol TCP/IP. Kalau lu tau cara kerja 'Handshake', lu bakal tau cara masuk lewat celah protokolnya.</p>
+                    <h4>MITM Attacks</h4>
+                    <p>Hanya untuk edukasi: Pahami gimana ARP Spoofing bekerja biar lu bisa ngelindungi jaringan lu sendiri dari serangan serupa.</p>
+                `
+            },
+            'record-cve': {
+                title: 'Archive: Common Vulnerabilities',
+                content: `
+                    <p>Seorang arsitek harus tau apa yang bisa bikin bangunannya roboh.</p>
+                    <h4>Log4Shell Analysis</h4>
+                    <p>Vulnerabilitas legendaris yang nunjukin kalau satu library kecil bisa ngebuka pintu buat seluruh server dunia. Pelajaran: Selalu audit dependency lu.</p>
+                    <h4>SQL Injection</h4>
+                    <p>Walaupun jadul, serangan ini masih sering kejadian karena programmer males pake <code>Prepared Statements</code>.</p>
+                `
+            },
+            'record-ethics': {
+                title: 'Ethics in Digital Frontier',
+                content: `
+                    <p>Skill besar harus dibarengi dengan tanggung jawab yang besar, Boss.</p>
+                    <h4>White Hat vs Black Hat</h4>
+                    <p>Bedanya cuma satu: Izin. Seorang pro sejati nyari celah buat diperbaiki, bukan buat ngerusak. Nama baik itu lebih mahal dari sekadar pamer data dump.</p>
+                    <p><strong>Rules:</strong> Jangan pernah nyoba exploit ke sistem yang lu gak punya izin tertulis di atas kertas.</p>
                 `
             }
         };
@@ -203,15 +258,14 @@
             const body = document.getElementById('articleBody');
             body.innerHTML = `<h2>${article.title}</h2>${article.content}`;
             document.getElementById('articleModal').style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Stop scroll
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
             document.getElementById('articleModal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Enable scroll
+            document.body.style.overflow = 'auto';
         }
 
-        // Close on click outside
         window.onclick = function(event) {
             const modal = document.getElementById('articleModal');
             if (event.target == modal) closeModal();
@@ -219,4 +273,3 @@
     </script>
 </body>
 </html>
-
