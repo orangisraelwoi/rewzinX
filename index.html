@@ -9,141 +9,125 @@
             --primary: #00f3ff;
             --accent: #ff0055;
             --bg-dark: #080808;
-            --glass: rgba(20, 20, 20, 0.8);
-            --border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(20, 20, 20, 0.9);
+            --border: rgba(0, 243, 255, 0.2);
         }
 
-        /* RESET & SCREEN LOCK */
+        /* SCREEN LOCK & RESET */
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
+            font-family: 'JetBrains Mono', 'Segoe UI', monospace;
+            user-select: none; -webkit-tap-highlight-color: transparent;
         }
 
         html, body {
-            width: 100%; height: 100%;
-            overflow: hidden; background: var(--bg-dark);
-            position: fixed; color: #ffffff;
+            width: 100%; height: 100%; overflow: hidden;
+            background: var(--bg-dark); position: fixed; color: #ffffff;
         }
 
         body {
             display: flex; justify-content: center; align-items: center;
-            background-image: radial-gradient(circle at center, #151515 0%, #080808 100%);
+            background-image: radial-gradient(circle at center, #111 0%, #000 100%);
         }
 
         /* NOTIFICATION SYSTEM */
         #custom-alert {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%) translateZ(0);
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 350px; padding: 15px; 
-            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid var(--primary); border-radius: 4px;
-            z-index: 10000; text-align: left;
-            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: #000; border: 1px solid var(--primary);
+            z-index: 10000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
         }
-        #custom-alert.active { transform: translate(-50%, 120px) translateZ(0); }
-        #custom-alert .alert-title { color: var(--primary); font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; display: block; }
-        #custom-alert .alert-text { color: #ccc; font-size: 0.85rem; line-height: 1.4; }
+        #custom-alert.active { transform: translate(-50%, 120px); }
+        .alert-title { color: var(--primary); font-size: 0.7rem; font-weight: bold; }
+        .alert-text { color: #fff; font-size: 0.8rem; margin-top: 5px; }
 
-        /* FORMAL CONTAINER */
+        /* MAIN CONTAINER */
         .system-container {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            padding: 30px; width: 92%; max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-            position: relative; z-index: 10;
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 30px; width: 92%; max-width: 400px;
+            box-shadow: 0 0 40px rgba(0,0,0,1); position: relative;
         }
 
-        header { border-bottom: 1px solid var(--border); margin-bottom: 25px; padding-bottom: 15px; }
-        h1 { font-size: 1.1rem; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; }
-        .subtitle { font-size: 0.65rem; color: #666; margin-top: 4px; }
+        header { border-bottom: 1px solid var(--border); margin-bottom: 20px; padding-bottom: 10px; }
+        h1 { font-size: 1rem; color: var(--primary); letter-spacing: 3px; }
+        .subtitle { font-size: 0.6rem; color: #555; text-transform: uppercase; }
 
-        /* FORM ELEMENTS */
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-size: 0.7rem; color: #888; margin-bottom: 6px; text-transform: uppercase; }
+        /* FORM STYLING */
+        .form-group { margin-bottom: 15px; }
+        label { font-size: 0.65rem; color: #888; display: block; margin-bottom: 5px; }
         
         input {
-            width: 100%; background: #111; border: 1px solid #222;
-            padding: 12px; color: #fff; outline: none; border-radius: 2px;
-            font-size: 0.9rem; transition: all 0.3s;
+            width: 100%; background: #000; border: 1px solid #333;
+            padding: 12px; color: var(--primary); outline: none;
+            font-size: 0.85rem; transition: 0.3s;
         }
-        input:focus { border-color: var(--primary); background: #151515; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,243,255,0.2); }
 
         .btn {
-            width: 100%; padding: 14px; border: none; border-radius: 2px;
-            font-size: 0.75rem; font-weight: bold; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
+            width: 100%; padding: 14px; border: none; cursor: pointer;
+            font-size: 0.7rem; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 2px; transition: 0.3s;
         }
         .btn-main { background: var(--primary); color: #000; margin-bottom: 10px; }
-        .btn-main:active { opacity: 0.8; transform: scale(0.98); }
-        .btn-sec { background: transparent; border: 1px solid #333; color: #888; }
+        .btn-main:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-sec { background: transparent; border: 1px solid #333; color: #666; }
 
         /* REACTION GRID */
         .reaction-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0;
         }
         .react-item {
-            background: #111; border: 1px solid #222; padding: 15px 0;
-            text-align: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+            background: #111; border: 1px solid #222; padding: 12px 0;
+            text-align: center; font-size: 1.2rem; cursor: pointer;
         }
-        .react-item.selected { border-color: var(--primary); background: rgba(0, 243, 255, 0.05); }
+        .react-item.selected { border-color: var(--primary); background: rgba(0,243,255,0.1); transform: scale(1.05); }
 
-        .footer-info { font-size: 0.6rem; color: #444; text-align: center; margin-top: 15px; }
-        .hidden { display: none !important; }
-
-        .badge {
-            position: absolute; top: 15px; right: 20px;
-            padding: 4px 10px; border-radius: 2px; font-size: 0.55rem; font-weight: bold;
-        }
-        .badge-free { background: #333; color: #888; }
+        .badge { position: absolute; top: 15px; right: 20px; padding: 3px 8px; font-size: 0.5rem; font-weight: bold; }
         .badge-prem { background: #f39c12; color: #000; }
+        .badge-free { background: #333; color: #888; }
+        
+        .hidden { display: none !important; }
+        .footer-info { font-size: 0.55rem; color: #333; text-align: center; margin-top: 15px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
     <div id="custom-alert">
-        <span class="alert-title">SYSTEM NOTIFICATION</span>
-        <p id="alert-msg" class="alert-text">Memuat protokol...</p>
+        <span class="alert-title">[ ARCHITECT SYSTEM ]</span>
+        <p id="alert-msg" class="alert-text"></p>
     </div>
 
     <div id="auth-section" class="system-container">
         <header>
-            <h1>Security Access</h1>
-            <p class="subtitle">Architect 01 Core Verification</p>
+            <h1>ACCESS KEY</h1>
+            <p class="subtitle">VERIFY ENTITY IDENTITY</p>
         </header>
-
         <div class="form-group">
-            <label>Identity</label>
-            <input type="text" id="user-in" placeholder="Username / Email">
+            <label>IDENTIFIER</label>
+            <input type="text" id="user-in" placeholder="Username">
         </div>
         <div class="form-group">
-            <label>Passcode</label>
+            <label>PASSCODE</label>
             <input type="password" id="pass-in" placeholder="••••••••">
         </div>
-
-        <button class="btn btn-main" onclick="processLogin()">Initialize Authentication</button>
-        <button class="btn btn-sec" onclick="guestLogin()">Guest Mode Access</button>
-
-        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #111;">
-            <p style="font-size: 0.65rem; color: #555; text-align: center;">Belum memiliki lisensi? Hubungi administrator untuk pendaftaran entitas baru.</p>
-        </div>
+        <button class="btn btn-main" onclick="processLogin()">LOGIN TO CORE</button>
+        <button class="btn btn-sec" onclick="guestLogin()">GUEST_ENTRY_BYPASS</button>
     </div>
 
     <div id="app-section" class="system-container hidden">
-        <span id="tier-badge" class="badge badge-free">FREE ACCOUNT</span>
+        <span id="tier-badge" class="badge badge-free">FREE_V01</span>
         <header>
-            <h1>Operation Dashboard</h1>
-            <p class="subtitle">WhatsApp Channel Interaction Tool</p>
+            <h1>CMD_CENTER</h1>
+            <p class="subtitle">WA_INTERACTION_INTEGRATOR</p>
         </header>
 
         <div class="form-group">
-            <label>Target Channel URL</label>
+            <label>TARGET_URL (WA CHANNEL)</label>
             <input type="text" id="wa-link" placeholder="https://whatsapp.com/channel/...">
         </div>
 
-        <label style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Selected Reaction</label>
+        <label>REACTION_PAYLOAD</label>
         <div class="reaction-grid">
             <div class="react-item" onclick="select(this)">🔥</div>
             <div class="react-item" onclick="select(this)">❤️</div>
@@ -155,26 +139,26 @@
             <div class="react-item" onclick="select(this)">⚡</div>
         </div>
 
-        <button class="btn btn-main" id="exec-btn" onclick="execute()">Execute Interaction</button>
+        <button class="btn btn-main" id="exec-btn" onclick="execute()">INITIATE_EXPLOIT</button>
+        
         <div id="limit-box" style="text-align: center; margin-top: 10px;">
-            <p id="limit-txt" style="font-size: 0.65rem; color: var(--accent);">Quota sisa: 5/5</p>
+            <p id="limit-txt" style="font-size: 0.6rem; color: var(--accent);">QUOTA: 5/5</p>
         </div>
-        
-        <button class="btn btn-sec" style="margin-top: 10px; color: #f39c12; border-color: #f39c12;" onclick="upgrade()">Acquire Premium License</button>
-        
-        <div class="footer-info">© 2026 RezinX - Secure Infrastructure</div>
+
+        <div class="footer-info">DEV: REZINX | INFRASTRUCTURE: ARCHITECT 01</div>
     </div>
 
     <script>
+        // --- ARCHITECT 01 GLOBAL CONFIG ---
         let isPremium = false;
         let usage = parseInt(localStorage.getItem('wa_sys_used')) || 0;
+        
+        // PASTIIN TUNNEL LU AKTIF DI TERMUX!
+        const tunnelURL = "https://rezinx-ganteng.loca.lt"; 
 
-        // MASUKKAN LINK LOCALTUNNEL / CLOUDFLARED LU DI SINI
-        const tunnelURL = "https://URL-DARI-TERMUX-LU.loca.lt";
-
-        function notify(message) {
+        function notify(msg) {
             const el = document.getElementById('custom-alert');
-            document.getElementById('alert-msg').innerText = message;
+            document.getElementById('alert-msg').innerText = msg;
             el.classList.add('active');
             setTimeout(() => el.classList.remove('active'), 3000);
         }
@@ -182,23 +166,20 @@
         function processLogin() {
             const u = document.getElementById('user-in').value.trim();
             const p = document.getElementById('pass-in').value.trim();
+            if(!u || !p) return notify("DATA KOSONG, ANJING!");
 
-            if (!u || !p) {
-                notify("Kesalahan: Kolom identitas dan passcode tidak boleh kosong.");
-                return;
-            }
-
-            if (u.toLowerCase() === "admin") {
+            if(u.toLowerCase() === "rezinx" && p === "24032010") {
                 isPremium = true;
-                notify("Otoritas diterima. Selamat datang kembali, Administrator.");
+                notify("WELCOME BACK, BOSS REZINX!");
+                enterApp();
             } else {
-                notify("Otoritas diterima sebagai pengguna reguler.");
+                notify("USER TIDAK DIKENAL. GUEST MODE ACTIVE.");
+                enterApp();
             }
-            enterApp();
         }
 
         function guestLogin() {
-            notify("Akses tamu diaktifkan. Batas penggunaan harian berlaku.");
+            notify("GUEST MODE: LIMIT 5x/DAY ACTIVE.");
             enterApp();
         }
 
@@ -212,18 +193,16 @@
             const badge = document.getElementById('tier-badge');
             const txt = document.getElementById('limit-txt');
             if (isPremium) {
-                badge.innerText = "PREMIUM LICENSE";
+                badge.innerText = "PREMIUM_LEVEL_Ω";
                 badge.className = "badge badge-prem";
-                txt.innerText = "Akses Tanpa Batas Diaktifkan";
+                txt.innerText = "INFINITY_ACCESS: ENABLED";
                 txt.style.color = "#00f3ff";
             } else {
-                let left = 5 - usage;
-                txt.innerText = `Quota Sisa: ${Math.max(0, left)} / 5`;
-                if (left <= 0) {
-                    const btn = document.getElementById('exec-btn');
-                    btn.disabled = true;
-                    btn.innerText = "Quota Terlampaui";
-                    btn.style.opacity = "0.3";
+                let rem = 5 - usage;
+                txt.innerText = `QUOTA_REMAINING: ${Math.max(0, rem)} / 5`;
+                if(rem <= 0) {
+                    const b = document.getElementById('exec-btn');
+                    b.disabled = true; b.innerText = "QUOTA_EXCEEDED";
                 }
             }
         }
@@ -234,58 +213,51 @@
         }
 
         async function execute() {
-            const url = document.getElementById('wa-link').value.trim();
-            const selected = document.querySelector('.react-item.selected');
+            const target = document.getElementById('wa-link').value.trim();
+            const emoji = document.querySelector('.react-item.selected');
 
-            if (!url) {
-                notify("Peringatan: URL target belum dimasukkan.");
-                return;
-            }
-            if (!selected) {
-                notify("Peringatan: Silakan pilih reaksi sebelum eksekusi.");
-                return;
-            }
+            if(!target) return notify("URL TARGET MANA, GOBLOK?");
+            if(!emoji) return notify("PILIH EMOJI DULU!");
 
             const btn = document.getElementById('exec-btn');
-            btn.disabled = true;
-            btn.innerText = "Transmitting...";
+            btn.disabled = true; btn.innerText = "SENDING_DATA...";
 
             try {
-                // INTEGRASI API TERMUX
+                // FIXED FETCH PROTOCOL
                 const response = await fetch(`${tunnelURL}/react`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'cors',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Bypass-Tunnel-Reminder': 'true' 
+                    },
                     body: JSON.stringify({
-                        link: url,
-                        emoji: selected.innerText
+                        link: target,
+                        emoji: emoji.innerText,
+                        requester: isPremium ? "PREMIUM" : "GUEST"
                     })
                 });
 
-                if (response.ok) {
-                    notify("Sukses: Interaksi telah dikirim ke target infrastruktur.");
-                    if (!isPremium) {
+                if(response.ok) {
+                    notify("INJECTION_SUCCESS: CHECK CHANNEL!");
+                    if(!isPremium) {
                         usage++;
                         localStorage.setItem('wa_sys_used', usage);
                         syncUI();
                     }
                 } else {
-                    notify("Gagal: Backend menolak permintaan (Status: " + response.status + ")");
+                    notify(`FAILED: SERVER_REJECTED (${response.status})`);
                 }
-            } catch (err) {
-                notify("Kesalahan: Backend Termux tidak merespon. Cek link tunnel!");
+            } catch (e) {
+                notify("CRITICAL: BACKEND_UNREACHABLE!");
+                console.error(e);
             } finally {
-                btn.disabled = false;
-                btn.innerText = "Execute Interaction";
+                btn.disabled = false; btn.innerText = "INITIATE_EXPLOIT";
             }
         }
 
-        function upgrade() {
-            notify("Hubungi @sigmanibosz untuk mendapatkan lisensi premium.");
-        }
-
-        document.addEventListener('touchmove', function (e) {
-            e.preventDefault();
-        }, { passive: false });
+        // NO SCROLLING / RELOAD PROTECTION
+        document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
     </script>
 </body>
 </html>
